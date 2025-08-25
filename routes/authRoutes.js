@@ -13,8 +13,9 @@ const { protect } = require('../middleware/authMiddleware');
 // 3. Define a POST route for '/register'
 // This route should be asynchronous
 router.post('/register', async (req, res) => {
-  // 4. Inside the route handler, destructure name, email, password, college, and role from the request body
-  const { name, email, password, college, role } = req.body;
+  // 4. Inside the route handler, destructure name, email, password, and college from the request body
+  // We removed 'role' since everyone registers as a student by default
+  const { name, email, password, college } = req.body;
 
   // 5. Use a try-catch block for error handling
   try {
@@ -30,8 +31,8 @@ router.post('/register', async (req, res) => {
       name,
       email,
       password,
-      college,
-      role
+      college
+      // role is now automatically set to 'student' by default
     });
 
     // 9. Hash the password. First, generate a salt with bcrypt.genSalt(10)

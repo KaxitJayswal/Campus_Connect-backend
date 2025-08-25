@@ -57,4 +57,31 @@ router.delete('/me/events/:id', protect, async (req, res) => {
   }
 });
 
+// @route   POST /api/users/me/apply-organizer
+// @desc    User applies to become an organizer
+// @access  Private
+router.post('/me/apply-organizer', protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+    // Only allow application if user is a student and hasn't applied before
+    if (user.role !== 'student' || user.organizerStatus !== 'none') {
+      return res.status(400).json({ 
+        msg: 'Invalid request. You must be a student who has not applied before.' 
+      });
+    }
+
+    user.organizerStatus = 'pending';
+    await user.save();
+    
+    // Return the updated user
+    const updatedUser = await User.findById(req.user.id).select('-password').populate('savedEvents');
+    res.json(updatedUser);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;

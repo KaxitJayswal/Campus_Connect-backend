@@ -11,8 +11,18 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   // - college: String
   college: { type: String },
-  // - role: String, with possible values 'student' or 'organizer', defaulting to 'student'
-  role: { type: String, enum: ['student', 'organizer'], default: 'student' },
+  // - role: String, with possible values 'student', 'organizer', or 'admin', defaulting to 'student'
+  role: { 
+    type: String, 
+    enum: ['student', 'organizer', 'admin'], 
+    default: 'student' 
+  },
+  // - organizerStatus: tracks the application status for becoming an organizer
+  organizerStatus: {
+    type: String,
+    enum: ['none', 'pending', 'approved'],
+    default: 'none'
+  },
   // - savedEvents: An array of ObjectIds, referencing the 'Event' model
   savedEvents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }]
 }, {

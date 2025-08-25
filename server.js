@@ -26,6 +26,9 @@ app.use('/api/events', require('./routes/eventRoutes'));
 // Add this line for user routes
 app.use('/api/users', require('./routes/userRoutes'));
 
+// Add admin routes
+app.use('/api/admin', require('./routes/adminRoutes'));
+
 // 5. Define a simple GET route for the root URL ('/') that sends a welcome message
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to Campus Connect API' });
